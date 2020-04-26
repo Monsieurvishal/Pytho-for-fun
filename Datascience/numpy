@@ -1,0 +1,12 @@
+
+import numpy as np
+y=[[1,2,3],[1,2,3]]
+x=np.array(y)
+print(x.max(),'\n')
+print(x.argmax(),'\n')
+print(x.min(),'\n')
+print(np.zeros(3),'\n')
+print(np.arange(100),'\n')
+print(np.linspace(1,10,5),'\n')
+print(np.random.rand(1,10,5),'\n')
+print(x<3)
