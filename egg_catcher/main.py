@@ -25,7 +25,7 @@ difficulty_factor = 0.95
 
 catcher_color = 'black'
 catcher_width = 200
-catcher_height = 200
+catcher_height = 200'''To place the catcher nearly in the center and match the cordinate of the arc'''
 catcher_start_x = canvas_width / 2 - catcher_width / 2
 catcher_start_y = canvas_height -catcher_height - 20
 catcher_start_x2 = catcher_start_x + catcher_width
@@ -58,22 +58,22 @@ def create_eggs():
 
 def move_eggs():
     for egg in eggs:
-        (egg_x,egg_y,egg_x2,egg_y2) = c.coords(egg)
-        c.move(egg,0,10)
-        if egg_y2 > canvas_height:
-            egg_dropped(egg)
-    win.after(egg_speed,move_eggs)
+        (egg_x,egg_y,egg_x2,egg_y2) = c.coords(egg)# this gets the co ordinate once the GUI is live
+        c.move(egg,0,10) #pushes the egg to down
+        if egg_y2 > canvas_height: #if egg hits the canvas height
+            egg_dropped(egg) #call the droped egg function
+    win.after(egg_speed,move_eggs) #repeat the same aftwe some seconds
 
-def egg_dropped(egg):
-    eggs.remove(egg)
-    c.delete(egg)
+def egg_dropped(egg): #checks if the player has the eligibility to continue
+    eggs.remove(egg) # if it hits the canvashe has to remove that egg from the list
+    c.delete(egg)#delete the egg from the canvas
     lose_a_life()
     if lives_remaning == 0:
         messagebox.showinfo('GAME OVER!' , 'Final Score : ' + str(score))
         win.destroy()
 
 def lose_a_life():
-    global lives_remaning
+    global lives_remaning #the change should reflect Globally
     lives_remaning -= 1
     c.itemconfigure(lives_text , text='Lives : ' + str(lives_remaning))
 
@@ -81,18 +81,21 @@ def catch_check():
     (catcher_x,catcher_y,catcher_x2,catcher_y2) = c.coords(catcher)
     for egg in eggs:
         (egg_x,egg_y,egg_x2,egg_y2) = c.coords(egg)
-        if catcher_x < egg_x and egg_x2  < catcher_x2 and catcher_y2 - egg_y2 < 40:
+        if catcher_x < egg_x and egg_x2  < catcher_x2 and catcher_y2 - egg_y2 < 40: 
+            # this checks if the egg has come near to the bowl(catcher)
+            
             eggs.remove(egg)
-            c.delete(egg)
+            c.delete(egg)#delete the egg from the canvas
             increase_score(egg_score)
     win.after(100,catch_check)
 
-def increase_score(points):
-    global score , egg_speed , egg_interval
-    score += points
+def increase_score(points): # increasing the points
+    global score , egg_speed , egg_interval # changes has to be reflected globally
+    score += points # increase the score
     egg_speed = int(egg_speed * difficulty_factor)
     egg_interval = int(egg_interval * difficulty_factor)
-    c.itemconfigure(score_text , text='Score : ' + str(score))
+    c.itemconfigure(score_text , text='Score : ' + str(score))#to item configure to change once the GUI is live
+#movement control in GUI
 
 def move_left(event):
     (x1,y1,x2,y2) = c.coords(catcher)
@@ -103,11 +106,14 @@ def move_right(event):
     (x1,y1,x2,y2) = c.coords(catcher)
     if x2 < canvas_width:
         c.move(catcher,20,0)
+#keyboard functions to  trigger our functions
 
 c.bind('<Left>' , move_left)
 c.bind('<Right>' , move_right)
 
 c.focus_set()
+
+#functions which monitered after some time
 
 win.after(1000,create_eggs)
 win.after(1000,move_eggs)
