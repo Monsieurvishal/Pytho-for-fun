@@ -17,7 +17,7 @@ c.pack()
 
 color_cycle = cycle(['light blue' , 'light pink' , 'light yellow','light green' , 'red', 'blue' , 'green','black'])
 egg_width = 45
-egg_height = 55''' these variables will be used by the functions'''
+egg_height = 55 # these variables will be used by the functions'''
 egg_score = 10
 egg_speed = 500
 egg_interval = 4000
@@ -25,7 +25,7 @@ difficulty_factor = 0.95
 
 catcher_color = 'black'
 catcher_width = 200
-catcher_height = 200'''To place the catcher nearly in the center and match the cordinate of the arc'''
+catcher_height = 200#To place the catcher nearly in the center and match the cordinate of the arc'''
 catcher_start_x = canvas_width / 2 - catcher_width / 2
 catcher_start_y = canvas_height -catcher_height - 20
 catcher_start_x2 = catcher_start_x + catcher_width
@@ -48,11 +48,11 @@ eggs = [] #Store the created eggs
 def create_eggs():
     x = randrange(10,740)
     y = 40
-    '''Eggs areoval in shape oval created by x0 x2 y0 y1''''
+   #Eggs areoval in shape oval created by x0 x2 y0 y1''''
     
     new_egg = c.create_oval(x,y,x+egg_width,y+egg_height,fill=next(color_cycle),width=0)
     eggs.append(new_egg)
-    ''' after every 4 seconds'''
+   # after every 4 seconds'''
     
     win.after(egg_interval,create_eggs)
 
