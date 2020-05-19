@@ -1,5 +1,8 @@
 from tkinter import *
 import tkinter.font as tkFont
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 
 class app():
     
@@ -12,17 +15,35 @@ class app():
         self.app_width = int(0.5*self.width)
         self.app_length = int(0.5*self.height)
         self.obj.geometry(str(self.app_width)+"x"+str(self.app_length))#Geometry is defined
-        
+        self.value={ }
         
         
     def startapp(self):
         
-        def printdata(entrybox,canvas1):#Entrybox which takes the input area from the user
+        def senddata():
+            if not firebase_admin._apps:
+                cred = credentials.Certificate('path/to/serviceAccountKey.json') 
+                firebase_admin.initialize_app(cred)
+            
+            db = firestore.client()
+        
+        
+        
+            #adding first data
+            doc_ref = db.collection('patient').document('doc')
+        
+            doc_ref.set(self.val)
+            
+        
+        def printdata(entrybox,entrybox1,canvas1):#Entrybox which takes the input area from the user
             text = entrybox.get()
+            name=entrybox1.get()
             l=[]
             for x in text.split('/'):
                 l.append(int(x))
-                
+            self.val={'systole':l[0],'diastole':l[1],'name':name}
+            
+        
             if l[0]<=120 and l[1]<=80:
                 label1 = Label(self.obj, text='Normal')
                 label1.config(font=('helvetica', 14))
@@ -63,11 +84,22 @@ class app():
         label2.config(font=('helvetica', 14))
         canvas1.create_window(200, 70, window=label2)
         
-        textin = StringVar()
-        e=Entry(self.obj)
-        canvas1.create_window(200,100 , window=e)
+        
+        e1=Entry(self.obj)
+        e2=Entry(self.obj)
+        canvas1.create_window(200,100 , window=e1)
+        canvas1.create_window(200,130 , window=e2)
         
         
-        button = Button(self.obj,text='Enter',command=lambda:printdata(e,canvas1))
-        canvas1.create_window(200, 120, window=button)
-         
+        button = Button(self.obj,text='Enter',command=lambda:printdata(e1,e2,canvas1))
+        canvas1.create_window(200, 150, window=button)
+        
+        button = Button(self.obj,text='senddata',command=lambda:senddata())
+        canvas1.create_window(200, 180, window=button)
+        
+        
+if __name__ == "__main__": 
+    object1 = Tk()
+    object2 = app(object1)
+    object2.startapp()
+    object1.mainloop()
